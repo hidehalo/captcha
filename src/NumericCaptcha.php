@@ -51,9 +51,9 @@ class NumericCaptcha
      * @param string $key
      * @return string
      */
-    private function safeKey()
+    private function safeKey($key)
     {
-       return self::DEFAULT_PREFIX . '.' . self::DEFAULT_KEY;
+       return self::DEFAULT_PREFIX . '.' . ($key?:self::DEFAULT_KEY);
     }
 
 
@@ -62,26 +62,26 @@ class NumericCaptcha
      * 
      * @codeCoverageIgnore
      * 
-     * @param string
+     * @param string $key
      * @return string
      */
-    private function getToken()
+    private function getToken($key)
     {
-        return $this->cache->get($this->safeKey(), '');
+        return $this->cache->get($this->safeKey($key), '');
     }
 
     /**
      * Generate token
      *
-     * @param string $key
      * @param integer $length
+     * @param string $key
      * @return string
      */
-    public function generate($length = 6)
+    public function generate($length = 6, $key = null)
     {
         $token = '';
         $token = $this->nano->formattedId('1234567890', $length);
-        $ret = $this->cache->set($this->safeKey(), $token, $this->timeout);
+        $ret = $this->cache->set($this->safeKey($key), $token, $this->timeout);
         if (!$ret) {
             $token = '';
         }
@@ -93,16 +93,17 @@ class NumericCaptcha
      * Verify token
      *
      * @param string $token
+     * @param string $key
      * @return VerifyResult
      */
-    public function verify($token)
+    public function verify($token, $key = null)
     {
         $ret = VerifyResult::VERIFY_FAILED;
         try {
-            $realToken = $this->getToken();
+            $realToken = $this->getToken($key);
             if ($realToken && $realToken == $token) {
                 $ret = VerifyResult::VERIFY_OK;
-                $this->cache->delete($this->safeKey());
+                $this->cache->delete($this->safeKey($key));
             } elseif (!$realToken) {
                 $ret = VerifyResult::VERIFY_EXPIRED;
             }

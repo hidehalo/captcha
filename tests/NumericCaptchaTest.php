@@ -27,12 +27,16 @@ class NumericCaptchaTest extends TestCase
      */
     public function testVerify(NumericCaptcha $captcha)
     {
-        $token = $captcha->generate();
-        $result1 = $captcha->verify($token);
-        $this->assertTrue($result1->isSuccessful());
+        $testLen = mt_rand(6, 64);
+        $token = $captcha->generate($testLen, "TEST_KEY");
+        $result1 = $captcha->verify("ERR_TOKEN", "TEST_KEY");
+        $this->assertTrue($result1->isFailed());
 
-        $result2 = $captcha->verify($token);
-        $this->assertTrue($result2->isExpired());
+        $result2 = $captcha->verify($token, "TEST_KEY");
+        $this->assertTrue($result2->isSuccessful());
+        
+        $result3 = $captcha->verify($token);
+        $this->assertTrue($result3->isExpired());
     }
 
     //
