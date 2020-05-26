@@ -4,7 +4,8 @@ namespace Hidehalo\Captcha\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Hidehalo\Captcha\NumericCaptcha;
-use Symfony\Component\Cache\Simple\ArrayCache;
+use Symfony\Component\Cache\Psr16Cache;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 class NumericCaptchaTest extends TestCase
 {
@@ -44,7 +45,7 @@ class NumericCaptchaTest extends TestCase
     {
         return [
             [
-                new NumericCaptcha(new ArrayCache())
+                new NumericCaptcha(new Psr16Cache(new ArrayAdapter()))
             ]
         ];
     }
