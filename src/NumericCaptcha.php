@@ -79,12 +79,13 @@ class NumericCaptcha
      */
     public function generate($length = 6, $key = null)
     {
-        $token = '';
         $token = $this->nano->formattedId('1234567890', $length);
         $ret = $this->cache->set($this->safeKey($key), $token, $this->timeout);
+        // @codeCoverageIgnoreStart
         if (!$ret) {
-            $token = '';
+            throw new \RuntimeException('Cache set failed.');
         }
+        // @codeCoverageIgnoreEnd
         
         return $token;
     }
@@ -103,14 +104,28 @@ class NumericCaptcha
             $realToken = $this->getToken($key);
             if ($realToken && $realToken == $token) {
                 $ret = VerifyResult::VERIFY_OK;
-                $this->cache->delete($this->safeKey($key));
             } elseif (!$realToken) {
                 $ret = VerifyResult::VERIFY_EXPIRED;
             }
+            // @codeCoverageIgnoreStart
         } catch (Exception $e) {
             $ret = VerifyResult::VERIFY_FAILED;
         } finally {
+            // @codeCoverageIgnoreEnd
             return new VerifyResult($ret);
         }
+    // @codeCoverageIgnoreStart
+    }
+    // @codeCoverageIgnoreEnd
+
+    /**
+     * Destroy token
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function destroy($key = null)
+    {
+        return $this->cache->delete($this->safeKey($key));
     }
 }

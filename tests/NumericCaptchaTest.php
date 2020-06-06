@@ -26,7 +26,7 @@ class NumericCaptchaTest extends TestCase
      *
      * @return void
      */
-    public function testVerify(NumericCaptcha $captcha)
+    public function testVerifyNDestroy(NumericCaptcha $captcha)
     {
         $testLen = mt_rand(6, 64);
         $token = $captcha->generate($testLen, "TEST_KEY");
@@ -36,8 +36,12 @@ class NumericCaptchaTest extends TestCase
         $result2 = $captcha->verify($token, "TEST_KEY");
         $this->assertTrue($result2->isSuccessful());
         
-        $result3 = $captcha->verify($token);
-        $this->assertTrue($result3->isExpired());
+        $result3 = $captcha->verify($token, "TEST_KEY");
+        $this->assertTrue($result3->isSuccessful());
+ 
+        $this->assertTrue($captcha->destroy("TEST_KEY"));
+        $result4 = $captcha->verify($token, "TEST_KEY");
+        $this->assertTrue($result4->isExpired());
     }
 
     //

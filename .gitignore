@@ -1,6 +1,7 @@
 .idea/
 .vscode/
-.DS_Store/
+.DS_Store
 composer.lock
 *.swp
 vendor/
+builds/
