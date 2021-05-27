@@ -1,6 +1,7 @@
 # Captch
 
 [![Build Status](https://travis-ci.org/hidehalo/emoji.svg)](https://travis-ci.org/hidehalo/captch)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhidehalo%2Fcaptcha.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhidehalo%2Fcaptcha?ref=badge_shield)
 
 ## Install
 
@@ -34,3 +35,6 @@ If you have any issues, just feel free and open it in this repository, thx!
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhidehalo%2Fcaptcha.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhidehalo%2Fcaptcha?ref=badge_large)
